@@ -1,9 +1,5 @@
 pipeline {
 
-  when {
-    branch 'feat/basic-alexa-demo'
-  }
-
   agent {
     dockerfile {
       filename 'Dockerfile'
@@ -15,6 +11,10 @@ pipeline {
   stages {
 
     stage('Build') {
+
+      when {
+        branch 'feat/basic-alexa-demo'
+      }
 
       environment {
         HOST = 'localhost'
