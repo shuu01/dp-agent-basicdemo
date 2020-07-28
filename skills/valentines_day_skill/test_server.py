@@ -1,4 +1,5 @@
 import requests
+import os
 
 
 true_requests = {
@@ -34,7 +35,9 @@ false_requests = [
 
 
 def test_skill():
-    url = "http://0.0.0.0:8058/respond"
+    host = os.getenv("HOST", 'localhost')
+    port = os.getenv("PORT", '3000')
+    url = f"http://{host}:{port}/respond"
     input_data = {}
     for segment_name, segment_examples in true_requests.items():
         for example in segment_examples:
