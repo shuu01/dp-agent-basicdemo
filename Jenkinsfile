@@ -4,7 +4,6 @@ pipeline {
     dockerfile {
       filename 'Dockerfile'
       dir 'skills/valentines_day_skill'
-      label 'skill'
     }
   }
 
