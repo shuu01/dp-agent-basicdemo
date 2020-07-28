@@ -1,7 +1,7 @@
 pipeline {
 
   when {
-    branch feat/basic-alexa-demo
+    branch 'feat/basic-alexa-demo'
   }
 
   agent {
