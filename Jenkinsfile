@@ -10,6 +10,7 @@ agent none
         dockerfile {
           filename 'Dockerfile'
           dir 'skills/valentines_day_skill'
+          customWorkspace 'skills/valentines_day_skill'
         }
       }
 
