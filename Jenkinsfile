@@ -23,7 +23,7 @@ agent none
       }
 
       steps {
-        sh 'python test_server.py'
+        sh 'ls -alh'
       }
     }
 
