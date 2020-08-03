@@ -18,13 +18,14 @@ node {
 
   stage('test') {
 
-    app.withRun('-p 8000:8000') { c ->
-      docker.image('alpine').inside('--network host -e HOST=localhost -e PORT=8000') { d ->
-        sh 'while ! nc -z $HOST $PORT; do sleep 1; done'
-      }
-      app.inside('-e HOST=127.0.0.1 -e PORT=8000') { d ->
-        sh 'env'
-        sh 'python test_server.py'
+    sh 'docker network create dp || true'
+
+    app.withRun('--network dp') { c ->
+      //docker.image('alpine').inside('--network host -e HOST=localhost -e PORT=8000') { d ->
+      //  sh 'while ! nc -z $HOST $PORT; do sleep 1; done'
+      //}
+      app.inside('-e HOST=${c.id} -e PORT=8000 --network dp') { d ->
+        sh 'python /src/test_server.py'
       }
     }
 
