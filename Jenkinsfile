@@ -19,6 +19,7 @@ node {
   stage('test') {
 
     app.inside {
+      sh 'ls -alh'
       sh 'python /src/test_server.py'
     }
 
