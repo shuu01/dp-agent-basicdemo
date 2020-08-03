@@ -18,10 +18,16 @@ node {
 
   stage('test') {
 
-    app.inside {
-      sh 'ls -alh'
-      sh 'python /src/test_server.py'
+    app.withRun(
+      '-p 3000:3000'
+    ) { c ->
+      app.inside(
+        '--network host'
+        ) { d ->
+          sh 'python /src/test_server.py'
+      }
     }
+
 
   }
 }
