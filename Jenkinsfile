@@ -19,7 +19,7 @@ node {
   stage('test') {
 
     app.withRun('-p 8000:8000') { c ->
-      image('alpine').inside('--network host -e HOST=localhost -e PORT=8000') { d ->
+      docker.image('alpine').inside('--network host -e HOST=localhost -e PORT=8000') { d ->
         sh 'while ! nc -z $HOST $PORT; do sleep 1; done'
       }
       app.inside('--network host -e HOST=localhost -e PORT=8000') { d ->
