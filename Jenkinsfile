@@ -12,7 +12,7 @@ node {
 
     sh 'ls -alh'
 
-    app = docker.build('demo:latest', '-f Dockerfile ./skills/valentines_day_skill')
+    app = docker.build('demo:latest', '-f ./skills/valentines_day_skill/Dockerfile ./skills/valentines_day_skill')
 
   }
 
