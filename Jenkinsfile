@@ -18,18 +18,11 @@ node {
 
   stage('test') {
 
-    app.withRun(
-      '-p 3000:3000'
-    ) { c ->
-        app.inside('
-        --link ${c.id}:server
-        -e HOST=server
-        -e PORT=3000
-        '
-      ) { d ->
-          sh 'python /src/test_server.py'
-        }
+    app.withRun('-p 3000:3000') { c ->
+      app.inside('--link ${c.id}:server -e HOST=server -e PORT=3000') { d ->
+        sh 'python /src/test_server.py'
       }
+    }
 
   }
 }
