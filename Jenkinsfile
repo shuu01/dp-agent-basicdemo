@@ -18,7 +18,7 @@ node {
 
   stage('test') {
 
-    app.inside('python /src/test_server.py')
+    app.inside(sh 'python /src/test_server.py')
 
   }
 }
