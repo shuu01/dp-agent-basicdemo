@@ -16,7 +16,7 @@ node {
 
   }
 
-  stage('test') {
+  stage('module test') {
 
     sh 'docker network create dp || true'
 
@@ -30,4 +30,12 @@ node {
     }
 
   }
+
+  stage('codestyle test') {
+    docker.image('alpine/flake8').inside() { c ->
+      sh 'ls -alh'
+      sh 'flake8 skills/valentines_day_skill'
+    }
+  }
+
 }
