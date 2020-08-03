@@ -10,7 +10,9 @@ node {
 
   stage('build') {
 
-    app = docker.build('demo:latest', '-f Dockerfile skills/valentines_day_skill')
+    sh 'ls -alh'
+
+    app = docker.build('demo:latest', '-f Dockerfile ./skills/valentines_day_skill')
 
   }
 
