@@ -1,42 +1,22 @@
-pipeline {
+node {
 
-agent none
+  def app
 
-  stages {
+  stage('clone') {
 
-    stage('Build') {
+    checkout scm
 
-      agent {
-        dockerfile {
-          filename 'Dockerfile'
-          dir 'skills/valentines_day_skill'
-          customWorkspace 'skills/valentines_day_skill'
-        }
-      }
+  }
 
-      when {
-        branch 'feat/basic-alexa-demo'
-      }
+  stage('build') {
 
-      environment {
-        HOST = 'localhost'
-        PORT = '3000'
-      }
+    app = docker.build('demo:latest', '-f Dockerfile skills/valentines_day_skill')
 
-      steps {
-        sh 'ls -alh'
-      }
-    }
+  }
 
-    stage('Test') {
-      steps {
-        echo 'Testing..'
-      }
-    }
-    stage('Deploy') {
-      steps {
-        echo 'Deploying....'
-      }
-    }
+  stage('test') {
+
+    app.inside('python /src/test_server.py')
+
   }
 }
