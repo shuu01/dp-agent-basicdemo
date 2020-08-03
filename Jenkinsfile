@@ -32,8 +32,8 @@ node {
   }
 
   stage('codestyle test') {
-    docker.image('alpine/flake8').inside() { c ->
-      sh 'skills/valentines_day_skill'
+    docker.image('alpine/flake8').inside('--entrypoint ""') { c ->
+      sh 'flake8 skills/valentines_day_skill'
     }
   }
 
