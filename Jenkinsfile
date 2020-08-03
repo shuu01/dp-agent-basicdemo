@@ -24,7 +24,7 @@ node {
       //docker.image('alpine').inside('--network host -e HOST=localhost -e PORT=8000') { d ->
       //  sh 'while ! nc -z $HOST $PORT; do sleep 1; done'
       //}
-      app.inside('-e HOST=${c.id} -e PORT=8000 --network dp') { d ->
+      app.inside("-e HOST=${c.id} -e PORT=8000 --network dp") { d ->
         sh 'python /src/test_server.py'
       }
     }
