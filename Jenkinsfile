@@ -33,7 +33,7 @@ node {
 
   stage('codestyle test') {
     docker.image('alpine/flake8').inside('--entrypoint ""') { c ->
-      sh 'flake8 skills/valentines_day_skill'
+      sh 'flake8 --max-line-length=100 skills/valentines_day_skill'
     }
   }
 
