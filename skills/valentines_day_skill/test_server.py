@@ -1,6 +1,5 @@
 import requests
 import os
-import argparse
 
 true_requests = {
     "what_is_love": ["what is love"],
@@ -53,6 +52,7 @@ def test_skill(host=None, port=None):
         assert not (response[0][0]), f"segment_name: false_segment\nexample: {example}"
     print("SUCCESS!")
 
+
 def test_agent(host=None, port=None):
 
     url = f"http://{host}:{port}/"
@@ -72,6 +72,7 @@ def test_agent(host=None, port=None):
         response = requests.post(url, json=input_data).json()
         assert not (response['response']), f"segment_name: false_segment\nexample: {example}"
     print("SUCCESS!")
+
 
 if __name__ == "__main__":
 
