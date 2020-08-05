@@ -36,6 +36,7 @@ node {
   stage('api test') {
 
     docker.image('docker/compose:latest').inside('--entrypoint ""') { c ->
+      sh 'docker-compose down || true'
       sh 'docker-compose up --build -d'
     }
     app.inside("-e HOST=agent -e PORT=4242 -e TEST=agent --network=dp") { d->
