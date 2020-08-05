@@ -40,13 +40,15 @@ def test_skill(host=None, port=None):
     for segment_name, segment_examples in true_requests.items():
         for example in segment_examples:
             input_data['user_id'] = user_name
-            input_data["payload"] = [example]
-            response = requests.post(url, json=input_data).json()
+            input_data["sentences"] = [example]
+            response = requests.post(url, json=input_data)
+            print(response)
+            response = response.json()
             print(f"Q:{example}\nA:{response[0][0]}\n")
             assert response[0][0], f"segment_name: {segment_name}\nexample: {example}"
     for example in false_requests:
         input_data['user_id'] = user_name
-        input_data["payload"] = [example]
+        input_data["sentences"] = [example]
         response = requests.post(url, json=input_data).json()
         assert not (response[0][0]), f"segment_name: false_segment\nexample: {example}"
     print("SUCCESS!")
