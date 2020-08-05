@@ -1,25 +1,34 @@
+networks:
+  dp:
+    name: dp
 services:
     agent:
         build:
-            context: ./
-            dockerfile: ./dockerfile
+          context: ./
+          dockerfile: ./dockerfile
         container_name: agent
         depends_on:
-            - mongo
+        - mongo
         ports:
-            - 4242:4242
+        - 4242:4242
+        networks:
+        - dp
         tty: true
         command: python -m deeppavlov_agent.run_http
     skill:
         build:
-            context: ./
-            dockerfile: ./dockerfile
+          context: ./
+          dockerfile: ./dockerfile
         command: python skills/valentines_day_skill/server.py
+        networks:
+        - dp
     mongo:
         command: mongod
         image: mongo:4.0.0
         ports:
-            - 27017:27017
+        - 27017:27017
         volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
+        - /var/run/docker.sock:/var/run/docker.sock
+        networks:
+        - dp
 version: "3.7"

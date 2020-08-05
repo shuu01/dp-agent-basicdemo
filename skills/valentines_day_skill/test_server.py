@@ -1,6 +1,6 @@
 import requests
 import os
-
+import argparse
 
 true_requests = {
     "what_is_love": ["what is love"],
@@ -33,24 +33,52 @@ false_requests = [
     "alexa what book college football bowl games are on today",
 ]
 
-
-def test_skill():
-    host = os.getenv("HOST", 'localhost')
-    port = os.getenv("PORT", '3000')
+def test_skill(host=None, port=None):
     url = f"http://{host}:{port}/respond"
+    user_name = 'test'
     input_data = {}
     for segment_name, segment_examples in true_requests.items():
         for example in segment_examples:
-            input_data["sentences"] = [example]
+            input_data['user_id'] = user_name
+            input_data["payload"] = [example]
             response = requests.post(url, json=input_data).json()
             print(f"Q:{example}\nA:{response[0][0]}\n")
             assert response[0][0], f"segment_name: {segment_name}\nexample: {example}"
     for example in false_requests:
-        input_data["sentences"] = [example]
+        input_data['user_id'] = user_name
+        input_data["payload"] = [example]
         response = requests.post(url, json=input_data).json()
         assert not (response[0][0]), f"segment_name: false_segment\nexample: {example}"
     print("SUCCESS!")
 
+def test_agent(host=None, port=None):
+
+    url = f"http://{host}:{port}/"
+    user_name = 'test'
+    input_data = {}
+    for segment_name, segment_examples in true_requests.items():
+        for example in segment_examples:
+            input_data['user_id'] = user_name
+            input_data["payload"] = example
+            response = requests.post(url, json=input_data).json()
+            print(response)
+            print(f"Q:{example}\nA:{response['response']}\n")
+            assert response['response'], f"segment_name: {segment_name}\nexample: {example}"
+    for example in false_requests:
+        input_data['user_id'] = user_name
+        input_data["payload"] = example
+        response = requests.post(url, json=input_data).json()
+        assert not (response['response']), f"segment_name: false_segment\nexample: {example}"
+    print("SUCCESS!")
 
 if __name__ == "__main__":
-    test_skill()
+
+    test = os.getenv("TEST")
+    host = os.getenv("HOST", 'localhost')
+    port = os.getenv("PORT", '3000')
+    if test == 'skill':
+        test_skill(host=host, port=port)
+    elif test == 'agent':
+        test_agent(host=host, port=port)
+    else:
+        print('You should specify test via TEST environment variable, allowed values are [agent, skill]')

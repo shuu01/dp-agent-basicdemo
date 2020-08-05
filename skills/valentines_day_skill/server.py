@@ -23,7 +23,7 @@ app = Flask(__name__)
 @app.route("/respond", methods=["POST"])
 def respond():
     st_time = time.time()
-    print(request.values)
+    logger.info(request.values)
     last_utter_batch = request.json["sentences"]
     responses = []
 
