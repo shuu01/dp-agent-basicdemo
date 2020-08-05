@@ -37,11 +37,11 @@ node {
   }
 
   stage('api test') {
-    docker.image('docker/compose:latest').withRun('--entrypoint ""') { c ->
-      sh '/bin/sh -c docker-compose up -d'
-      app.inside("-e HOST=agent -e PORT=4242 -e TEST=agent --network=dp") { d->
-        sh 'python /src/test_server.py'
-      }
+    docker.image('docker/compose:latest').inside('--entrypoint ""') { c ->
+      sh 'docker-compose up -d'
+    }
+    app.inside("-e HOST=agent -e PORT=4242 -e TEST=agent --network=dp") { d->
+      sh 'python /src/test_server.py'
     }
   }
 
