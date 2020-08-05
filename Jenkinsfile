@@ -3,17 +3,11 @@ node {
   def app
 
   stage('clone') {
-
     checkout scm
-
   }
 
   stage('build') {
-
-    sh 'ls -alh'
-
     app = docker.build('demo:latest', '-f ./skills/valentines_day_skill/Dockerfile ./skills/valentines_day_skill')
-
   }
 
   stage('module test') {
@@ -28,6 +22,9 @@ node {
         sh 'python /src/test_server.py'
       }
     }
+
+    sh 'docker network rm dp'
+
   }
 
   stage('codestyle test') {
@@ -37,11 +34,16 @@ node {
   }
 
   stage('api test') {
+
     docker.image('docker/compose:latest').inside('--entrypoint ""') { c ->
-      sh 'docker-compose up -d'
+      sh 'docker-compose up --build -d'
     }
     app.inside("-e HOST=agent -e PORT=4242 -e TEST=agent --network=dp") { d->
       sh 'python /src/test_server.py'
+    }
+
+    docker.image('docker/compose:latest').inside('--entrypoint ""') { c ->
+      sh 'docker-compose down'
     }
   }
 
