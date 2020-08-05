@@ -21,9 +21,9 @@ node {
     sh 'docker network create dp || true'
 
     app.withRun('--network dp --name server') { c ->
-      //docker.image('alpine').inside('--network host -e HOST=localhost -e PORT=8000') { d ->
-      //  sh 'while ! nc -z $HOST $PORT; do sleep 1; done'
-      //}
+      docker.image('alpine').inside('--network host -e HOST=localhost -e PORT=8000') { d ->
+        sh 'while ! nc -z $HOST $PORT; do sleep 1; done'
+      }
       app.inside("-e HOST=server -e PORT=8000 -e TEST=skill --network dp") { d ->
         sh 'python /src/test_server.py'
       }
