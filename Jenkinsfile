@@ -1,6 +1,7 @@
 #!groovy
 
 def isPullRequest = env.CHANGE_ID ? true : false
+def BuildBadge = addEmbeddableBadgeConfiguration(id: "build", subject: "Build")
 
 node {
 
@@ -17,7 +18,9 @@ node {
   }
 
   stage('build') {
+    BuildBadge.setStatus('running')
     app = docker.build('demo:latest', '-f ./skills/valentines_day_skill/Dockerfile ./skills/valentines_day_skill')
+    BuildBadge.setStatus('passing')
   }
 
   stage('module test') {

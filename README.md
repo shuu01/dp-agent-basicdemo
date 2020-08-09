@@ -1,3 +1,5 @@
+[![Build Status](http://shuu01.ddns.net/buildStatus/icon?job=dp-multibranch%2Ffeat%252Fbasic-alexa-demo)](http://shuu01.ddns.net/job/dp-multibranch/job/feat%252Fbasic-alexa-demo/)
+
 # This is a simplest demo of deeppavlov agent
 
 It consists of two dummy skills in line alongside with built-in rule based skill selector.
@@ -10,7 +12,7 @@ Runs with docker-compose
 
 ## Requirements
 
-* [Docker](https://www.docker.com/products/docker-desktop) 
+* [Docker](https://www.docker.com/products/docker-desktop)
 * [Docker-compose](https://docs.docker.com/compose/install/)
 
 ## Running the demo
