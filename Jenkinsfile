@@ -22,9 +22,9 @@ node {
 
   stage('module test') {
 
-    sh 'docker network create dp || true'
+    //sh 'docker network create dp || true'
 
-    app.withRun('--network dp --name server') { c ->
+    app.withRun('--name server') { c ->
       docker.image('alpine').inside("--link ${c.id}:server -e HOST=server -e PORT=8000") { d ->
         sh 'while ! nc -z $HOST $PORT; do sleep 1; done'
       }
@@ -33,7 +33,7 @@ node {
       }
     }
 
-    sh 'docker network rm dp'
+    //sh 'docker network rm dp'
 
   }
 
