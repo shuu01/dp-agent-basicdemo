@@ -1,9 +1,19 @@
+#!groovy
+
+def isPullRequest = env.CHANGE_ID ? true : false
+
 node {
 
   def app
 
-  stage('clone') {
+  stage('checkout') {
     checkout scm
+
+    echo "Current branch is ${env.BRANCH_NAME}"
+
+    if (isPullRequest) {
+      echo "This is a pull request: merge ${env.CHANGE_BRANCH} into ${env.CHANGE_TARGET}"
+    }
   }
 
   stage('build') {
@@ -15,10 +25,10 @@ node {
     sh 'docker network create dp || true'
 
     app.withRun('--network dp --name server') { c ->
-      docker.image('alpine').inside('--network dp -e HOST=server -e PORT=8000') { d ->
+      docker.image('alpine').inside("--link ${c.id}:server -e HOST=server -e PORT=8000') { d ->
         sh 'while ! nc -z $HOST $PORT; do sleep 1; done'
       }
-      app.inside("-e HOST=server -e PORT=8000 -e TEST=skill --network dp") { d ->
+      app.inside("-e HOST=server -e PORT=8000 -e TEST=skill --link ${c.id}") { d ->
         sh 'python /src/test_server.py'
       }
     }
