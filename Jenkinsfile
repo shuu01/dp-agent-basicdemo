@@ -18,7 +18,7 @@ agent any
           echo "Current branch is ${env.BRANCH_NAME}"
           echo "This is a pull request: merge ${env.CHANGE_BRANCH} into ${env.CHANGE_TARGET}"
           echo """Pull request id: ${pullRequest.id} or ${env.CHANGE_ID}
-                Pull request title: ${pullRequest.title}
+                Pull request title: ${pullRequest.title} or ${env.CHANGE_TITLE}
                 Pull request headRef: ${pullRequest.headRef}
                 Pull request base: ${pullRequest.base}"""
         }
@@ -57,9 +57,13 @@ agent any
 
     }
 
-    stage('Test') {
+    stage('Codestyle Test') {
+      agent {
+        image 'alpine/flake8'
+        args '--entrypoint ""'
+      }
       steps {
-        echo 'Testing..'
+        sh 'flake8 --max-line-length=120 skills'
       }
     }
     stage('Deploy') {
