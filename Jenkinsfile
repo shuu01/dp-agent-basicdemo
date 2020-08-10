@@ -19,7 +19,7 @@ agent any
           echo "This is a pull request: merge ${env.CHANGE_BRANCH} into ${env.CHANGE_TARGET}"
           echo "Pull request id: ${pullRequest.id} \
                 Pull request headRef: ${pullRequest.headRef} \
-                Pull request base: ${pullRequest.base}""
+                Pull request base: ${pullRequest.base}"
         }
       }
     }
