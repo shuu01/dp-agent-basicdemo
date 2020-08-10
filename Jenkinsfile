@@ -29,7 +29,7 @@ agent any
 
       agent {
         docker {
-          image { 'docker' }
+          image 'docker'
         }
       }
 
