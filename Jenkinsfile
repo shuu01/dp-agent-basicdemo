@@ -11,7 +11,7 @@ agent any
 
     stage('Checkout') {
       when {
-        changeRequest target: "feat/*", comparator: 'REGEXP'
+        changeRequest()
       }
       steps {
         echo "Current branch is ${env.BRANCH_NAME}"
@@ -31,7 +31,7 @@ agent any
       }
 
       when {
-        branch pattern: "feat/*", comparator: 'REGEXP'
+        changeRequest()
       }
 
       environment {
