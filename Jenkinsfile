@@ -46,8 +46,10 @@ agent any
       steps {
         script {
           app = docker.build('demo:latest', '-f ./skills/valentines_day_skill/Dockerfile ./skills/valentines_day_skill')
-          app.inside("-e HOST -e PORT -e TEST --link ${c.id}:server") { d ->
-            sh 'python /src/test_server.py'
+          app.withRun('--name server') { c ->
+            app.inside("-e HOST -e PORT -e TEST --link ${c.id}:server") { d ->
+              sh 'python /src/test_server.py'
+            }
           }
           pullRequest.addLabel('Passing')
         }
