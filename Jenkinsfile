@@ -5,7 +5,7 @@ def BuildBadge = addEmbeddableBadgeConfiguration(id: "build", subject: "Build")
 
 pipeline {
 
-agent any
+  agent any
 
   stages {
 
@@ -68,9 +68,27 @@ agent any
         sh 'flake8 --max-line-length=120 skills'
       }
     }
-    stage('Deploy') {
+
+    stage('Api Test') {
+      agent {
+        docker {
+          image 'docker/compose:latest'
+          args '--entrypoint ""'
+        }
+      }
+      environment {
+        HOST = 'server'
+        PORT = '4242'
+        TEST = 'agent'
+      }
       steps {
-        echo 'Deploying....'
+        script {
+          sh 'docker-compose up --build -d'
+          app.inside("-e HOST -e PORT -e TEST --network=dp") { d->
+            sh 'python /src/test_server.py'
+          }
+          sh 'docker-compose down'
+        }
       }
     }
   }
