@@ -17,11 +17,9 @@ agent any
         script {
           echo "Current branch is ${env.BRANCH_NAME}"
           echo "This is a pull request: merge ${env.CHANGE_BRANCH} into ${env.CHANGE_TARGET}"
-          echo """Pull request id: ${pullRequest.id}\
-                Pull request title: ${pullRequest.title}\
-                Pull request body: ${pullRequest.body}\
-                Pull request labels: ${pullRequest.labels}\
-                Pull request headRef: ${pullRequest.headRef}\
+          echo """Pull request id: ${pullRequest.id} or ${env.CHANGE_ID}
+                Pull request title: ${pullRequest.title}
+                Pull request headRef: ${pullRequest.headRef}
                 Pull request base: ${pullRequest.base}"""
         }
       }
@@ -30,10 +28,8 @@ agent any
     stage('Module Test') {
 
       agent {
-        dockerfile {
-          filename 'Dockerfile'
-          dir 'skills/valentines_day_skill'
-          customWorkspace 'skills/valentines_day_skill'
+        docker {
+          image { 'docker' }
         }
       }
 
@@ -48,8 +44,11 @@ agent any
       }
 
       steps {
-        sh 'python /src/test_server.py'
         script {
+          app = docker.build('demo:latest', '-f ./skills/valentines_day_skill/Dockerfile ./skills/valentines_day_skill')
+          app.inside("-e HOST -e PORT -e TEST --link ${c.id}:server") { d ->
+            sh 'python /src/test_server.py'
+          }
           pullRequest.addLabel('Passing')
         }
       }
