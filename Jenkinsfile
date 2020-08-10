@@ -14,9 +14,11 @@ agent any
         changeRequest()
       }
       steps {
-        echo "Current branch is ${env.BRANCH_NAME}"
-        echo "This is a pull request: merge ${env.CHANGE_BRANCH} into ${env.CHANGE_TARGET}"
-        echo "Pull request id: ${pullRequest.id}"
+        script {
+          echo "Current branch is ${env.BRANCH_NAME}"
+          echo "This is a pull request: merge ${env.CHANGE_BRANCH} into ${env.CHANGE_TARGET}"
+          echo "Pull request id: ${pullRequest.id}"
+        }
       }
     }
 
@@ -37,6 +39,7 @@ agent any
       environment {
         HOST = 'localhost'
         PORT = '3000'
+        TEST = 'skill'
       }
 
       steps {

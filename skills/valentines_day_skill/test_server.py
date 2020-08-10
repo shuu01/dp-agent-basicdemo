@@ -1,5 +1,6 @@
 import requests
 import os
+import sys
 
 true_requests = {
     "what_is_love": ["what is love"],
@@ -86,3 +87,4 @@ if __name__ == "__main__":
         test_agent(host=host, port=port)
     else:
         print('You should specify test via TEST environment variable, allowed values are [agent, skill]')
+        sys.exit(1)
