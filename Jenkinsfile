@@ -38,7 +38,7 @@ agent any
       }
 
       environment {
-        HOST = 'localhost'
+        HOST = 'server'
         PORT = '8000'
         TEST = 'skill'
       }
