@@ -17,8 +17,8 @@ agent any
         script {
           echo "Current branch is ${env.BRANCH_NAME}"
           echo "This is a pull request: merge ${env.CHANGE_BRANCH} into ${env.CHANGE_TARGET}"
-          echo "Pull request id: ${pullRequest.id}\n
-                Pull request headRef: ${pullRequest.headRef}
+          echo "Pull request id: ${pullRequest.id} \
+                Pull request headRef: ${pullRequest.headRef} \
                 Pull request base: ${pullRequest.base}""
         }
       }
