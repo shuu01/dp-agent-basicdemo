@@ -17,12 +17,14 @@ agent any
         script {
           echo "Current branch is ${env.BRANCH_NAME}"
           echo "This is a pull request: merge ${env.CHANGE_BRANCH} into ${env.CHANGE_TARGET}"
-          echo "Pull request id: ${pullRequest.id}"
+          echo "Pull request id: ${pullRequest.id}\n
+                Pull request headRef: ${pullRequest.headRef}
+                Pull request base: ${pullRequest.base}""
         }
       }
     }
 
-    stage('Build') {
+    stage('Module Test') {
 
       agent {
         dockerfile {
@@ -44,7 +46,9 @@ agent any
 
       steps {
         sh 'python /src/test_server.py'
+        pullRequest.addLabel('Passing')
       }
+
     }
 
     stage('Test') {
