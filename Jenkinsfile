@@ -59,8 +59,10 @@ agent any
 
     stage('Codestyle Test') {
       agent {
-        image 'alpine/flake8'
-        args '--entrypoint ""'
+        docker {
+          image 'alpine/flake8'
+          args '--entrypoint ""'
+        }
       }
       steps {
         sh 'flake8 --max-line-length=120 skills'
