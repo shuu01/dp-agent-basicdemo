@@ -46,7 +46,9 @@ agent any
 
       steps {
         sh 'python /src/test_server.py'
-        pullRequest.addLabel('Passing')
+        script {
+          pullRequest.addLabel('Passing')
+        }
       }
 
     }
