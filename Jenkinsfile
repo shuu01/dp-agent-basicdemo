@@ -10,15 +10,19 @@ pipeline {
   stages {
 
     stage('Checkout') {
+
       when {
         changeRequest()
-        branch pattern: "feat/*"
+        expression {
+          return env.CHANGE_TARGET =~ "feat/*"
+        }
       }
+
       steps {
         script {
-          echo "Current branch is ${env.BRANCH_NAME}"
-          echo "This is a pull request: merge ${env.CHANGE_BRANCH} into ${env.CHANGE_TARGET}"
           echo """
+          Current branch is ${env.BRANCH_NAME}
+          Pull request: merge ${env.CHANGE_BRANCH} into ${env.CHANGE_TARGET}
           Pull request id: ${pullRequest.id} or ${env.CHANGE_ID}
           Pull request title: ${pullRequest.title} or ${env.CHANGE_TITLE}
           Pull request headRef: ${pullRequest.headRef} or ${env.CHANGE_BRANCH}
@@ -38,7 +42,10 @@ pipeline {
 
       when {
         changeRequest()
-        branch pattern: "feat/*"
+        expression {
+          return env.CHANGE_TARGET =~ "feat/*"
+        }
+        beforeAgent true
       }
 
       environment {
@@ -61,29 +68,46 @@ pipeline {
     }
 
     stage('Codestyle Test') {
+
       agent {
         docker {
           image 'alpine/flake8'
           args '--entrypoint ""'
         }
       }
+
+      when {
+        changeRequest()
+        branch pattern: "feat/*"
+        beforeAgent true
+      }
+
       steps {
         sh 'flake8 --max-line-length=120 skills'
       }
     }
 
     stage('Api Test') {
+
       agent {
         docker {
           image 'docker/compose:latest'
           args '--entrypoint ""'
         }
       }
+
+      when {
+        changeRequest()
+        branch pattern: "feat/*"
+        beforeAgent true
+      }
+
       environment {
         HOST = 'agent'
         PORT = '4242'
         TEST = 'agent'
       }
+
       steps {
         script {
           sh 'docker-compose up --build -d'
@@ -92,6 +116,7 @@ pipeline {
           }
         }
       }
+
       post {
         always {
           sh 'docker-compose down'
