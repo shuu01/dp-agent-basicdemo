@@ -19,8 +19,8 @@ pipeline {
           echo "This is a pull request: merge ${env.CHANGE_BRANCH} into ${env.CHANGE_TARGET}"
           echo """Pull request id: ${pullRequest.id} or ${env.CHANGE_ID}
                 Pull request title: ${pullRequest.title} or ${env.CHANGE_TITLE}
-                Pull request headRef: ${pullRequest.headRef}
-                Pull request base: ${pullRequest.base}"""
+                Pull request headRef: ${pullRequest.headRef} or ${env.CHANGE_BRANCH}
+                Pull request base: ${pullRequest.base} of ${env.CHANGE_TARGET}"""
         }
       }
     }
@@ -90,6 +90,12 @@ pipeline {
           }
           sh 'docker-compose down'
         }
+        post {
+          always {
+            sh 'docker-compose down'
+          }
+        }
+
       }
     }
   }
