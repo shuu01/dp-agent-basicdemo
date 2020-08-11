@@ -12,7 +12,7 @@ pipeline {
     stage('Checkout') {
 
       when {
-        changeRequest target "feat/*"
+        changeRequest target: "feat/*"
       }
 
       steps {
