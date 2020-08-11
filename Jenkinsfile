@@ -38,7 +38,7 @@ pipeline {
 
       when {
         changeRequest()
-        branch patter: "feat/*"
+        branch pattern: "feat/*"
       }
 
       environment {
