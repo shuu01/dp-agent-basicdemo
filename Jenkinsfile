@@ -12,15 +12,12 @@ pipeline {
     stage('Checkout') {
 
       when {
-        changeRequest()
-        expression {
-          return env.CHANGE_TARGET =~ "feat/*"
-        }
+        changeRequest target "feat/*"
       }
 
       steps {
         script {
-          echo """
+          echo """\
           Current branch is ${env.BRANCH_NAME}
           Pull request: merge ${env.CHANGE_BRANCH} into ${env.CHANGE_TARGET}
           Pull request id: ${pullRequest.id} or ${env.CHANGE_ID}
