@@ -51,7 +51,6 @@ pipeline {
               sh 'python /src/test_server.py'
             }
           }
-          pullRequest.addLabel('Passing')
         }
       }
 
@@ -95,6 +94,15 @@ pipeline {
         }
       }
 
+    }
+  }
+
+  post {
+    success {
+      pullRequest.addLabel('Success')
+    }
+    failure {
+      pullRequest.addLabel('Failure')
     }
   }
 }
