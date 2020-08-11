@@ -12,15 +12,18 @@ pipeline {
     stage('Checkout') {
       when {
         changeRequest()
+        branch pattern: "feat/*"
       }
       steps {
         script {
           echo "Current branch is ${env.BRANCH_NAME}"
           echo "This is a pull request: merge ${env.CHANGE_BRANCH} into ${env.CHANGE_TARGET}"
-          echo """Pull request id: ${pullRequest.id} or ${env.CHANGE_ID}
-                Pull request title: ${pullRequest.title} or ${env.CHANGE_TITLE}
-                Pull request headRef: ${pullRequest.headRef} or ${env.CHANGE_BRANCH}
-                Pull request base: ${pullRequest.base} of ${env.CHANGE_TARGET}"""
+          echo """
+          Pull request id: ${pullRequest.id} or ${env.CHANGE_ID}
+          Pull request title: ${pullRequest.title} or ${env.CHANGE_TITLE}
+          Pull request headRef: ${pullRequest.headRef} or ${env.CHANGE_BRANCH}
+          Pull request base: ${pullRequest.base} of ${env.CHANGE_TARGET}
+          """
         }
       }
     }
@@ -35,6 +38,7 @@ pipeline {
 
       when {
         changeRequest()
+        branch patter: "feat/*"
       }
 
       environment {
@@ -84,7 +88,7 @@ pipeline {
         script {
           sh 'docker-compose up --build -d'
           app.inside("-e HOST -e PORT -e TEST --network=dp") { d->
-            sh 'python /src/test_server1.py'
+            sh 'python /src/test_server.py'
           }
         }
       }
@@ -101,13 +105,11 @@ pipeline {
     success {
       script {
         pullRequest.setLabels(['Success'])
-        //pullRequest.addLabel('Success')
       }
     }
     failure {
       script {
         pullRequest.setLabels(['Failure'])
-        //pullRequest.addLabel('Failure')
       }
     }
   }
