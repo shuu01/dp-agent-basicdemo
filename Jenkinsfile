@@ -100,12 +100,14 @@ pipeline {
   post {
     success {
       script {
-        pullRequest.addLabel('Success')
+        pullRequest.setLabels(['Success'])
+        //pullRequest.addLabel('Success')
       }
     }
     failure {
       script {
-        pullRequest.addLabel('Failure')
+        pullRequest.setLabels(['Failure'])
+        //pullRequest.addLabel('Failure')
       }
     }
   }
