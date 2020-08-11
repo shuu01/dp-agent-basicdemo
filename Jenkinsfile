@@ -90,13 +90,13 @@ pipeline {
           }
           sh 'docker-compose down'
         }
-        post {
-          always {
-            sh 'docker-compose down'
-          }
-        }
-
       }
+      post {
+        always {
+          sh 'docker-compose down'
+        }
+      }
+
     }
   }
 }
