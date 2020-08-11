@@ -83,12 +83,10 @@ pipeline {
       }
       steps {
         script {
-          sh 'docker-compose down || true'
           sh 'docker-compose up --build -d'
           app.inside("-e HOST -e PORT -e TEST --network=dp") { d->
-            sh 'python /src/test_server.py'
+            sh 'python /src/test_server1.py'
           }
-          sh 'docker-compose down'
         }
       }
       post {
