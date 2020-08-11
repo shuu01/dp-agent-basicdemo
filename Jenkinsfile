@@ -124,12 +124,16 @@ pipeline {
   post {
     success {
       script {
-        pullRequest.setLabels(['Success'])
+        if (isPullRequest) {
+          pullRequest.setLabels(['Success'])
+        }
       }
     }
     failure {
       script {
-        pullRequest.setLabels(['Failure'])
+        if (isPullRequest) {
+          pullRequest.setLabels(['Failure'])
+        }
       }
     }
   }
