@@ -74,8 +74,7 @@ pipeline {
       }
 
       when {
-        changeRequest()
-        branch pattern: "feat/*"
+        changeRequest target: 'feat/*', comparator: 'GLOB'
         beforeAgent true
       }
 
@@ -94,8 +93,7 @@ pipeline {
       }
 
       when {
-        changeRequest()
-        branch pattern: "feat/*"
+        changeRequest target: 'feat/*', comparator: 'GLOB'
         beforeAgent true
       }
 
